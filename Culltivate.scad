@@ -1,6 +1,8 @@
 /* [General Settings] */
 //I want to generate...
 select_output=0; // [0:Custom Label, 01:Assorted Labels]
+// Shape and style of labels
+label_style="tombstone";// ["square":Square, "rounded":Rounded, "tombstone":Tombstone, "chamfered":Chamfered]
 // Length in mm
 label_length = 100;
 // Width in mm
@@ -29,7 +31,7 @@ fudge = 0.0001; // Fix render for exact booleans
 
 // Label body
 module culltivate_body(
-            style = "tombstone",
+            style = label_style,
             x = label_length,
             y = label_width,
             z = label_thickness,
@@ -86,7 +88,7 @@ module culltivate_body(
 
 // Label Border
 module culltivate_border(
-            style = "tombstone",
+            style = label_style,
             x = label_length,
             y = label_width,
             z = text_height,
@@ -105,4 +107,12 @@ module culltivate_border(
             translate([xy_loc,xy_loc,0])
                 culltivate_body(style=style,x=x2,y=y2,z=z);
         }
+}
+
+union(){
+    color("silver")
+        culltivate_body();
+    translate([0,0,label_thickness])
+        color("#000000")
+            #culltivate_border();
 }
