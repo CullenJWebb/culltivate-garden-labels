@@ -1,23 +1,41 @@
-/* [General Settings] */
+/* [Style and Appearance] */
 //I want to generate...
 select_output=0; // [0:Custom Label, 01:Assorted Labels]
 // Shape and style of labels
 label_style="tombstone";// ["square":Square, "rounded":Rounded, "tombstone":Tombstone, "chamfered":Chamfered]
-// Length in mm
-label_length = 100;
-// Width in mm
-label_width = 25;
-// Multiple of 0.2mm recommended
-label_thickness = 2;
 // Toggle decorative outline
 enable_border = true;
 // Thickness of decorative outline in mm
-border_size = 0.4; // .1 
+border_size = 1; // .1
+// Emboss text as separate layer or disable to print flush (flush requires 3MF file from Makerworld customizer)
+emboss = true;
+// Toggle text/border on bottom of label (flush only)
+mirror_label = true;
+/* [Fonts] */
 // Primary font family
 font_primary = "Open Sans"; // [Open Sans, Open Sans Condensed, Ubuntu, Montserrat]
+// Primary font style
+font_style_primary = "Regular"; // [Regular,Black,Bold,ExtraBol,ExtraLight,Light,Medium,SemiBold,Thin,Italic,Black Italic,Bold Italic,ExtraBold Italic,ExtraLight Italic,Light Italic,Medium Italic,SemiBold Italic,Thin Italic]
 // Primary text font size
 font_size_primary = 5;  // .1
-
+// Secondary font family
+font_secondary = "Open Sans"; // [Open Sans, Open Sans Condensed, Ubuntu, Montserrat]
+// Secondary font style
+font_style_secondary = "Regular"; // [Regular,Black,Bold,ExtraBol,ExtraLight,Light,Medium,SemiBold,Thin,Italic,Black Italic,Bold Italic,ExtraBold Italic,ExtraLight Italic,Light Italic,Medium Italic,SemiBold Italic,Thin Italic]
+// Secondary text font size
+font_size_secondary = 5;  // .1
+/* [Size] */
+// Length in mm
+label_length = 75;
+// Width in mm
+label_width = 15;
+// Multiple of 0.2mm recommended
+label_thickness = 1.2;
+/* [Custom Label] */
+// Primary text for label
+text1 = "Tomato";
+// Optional secondary text for label
+text2 = "Roma";
 /* [Advanced] */
 // Height of text and other embossed elements
 text_height = 0.2;
@@ -109,10 +127,55 @@ module culltivate_border(
         }
 }
 
+// Label Text
+module culltivate_text(
+            style = label_style,
+            x = label_length,
+            y = label_width,
+            z = label_thickness,
+            textz = text_height,
+            border_x = border_size,
+            text1 = text1,
+            font1 = font_primary,
+            fstyle1 = font_style_primary,
+            fsize1 = font_size_primary,
+            text2 = text2,
+            font2 = font_secondary,
+            fstyle2 = font_style_secondary,
+            fsize2 = font_size_secondary,
+        ){
+        
+        // Calculate variables
+        posx1 = 1 + border_x;
+        posy1 = y/2;
+        posz1 = z;
+        textpos1 = [posx1,posy1,posz1];
+        
+        module text1_output(){
+            translate(textpos1)
+                linear_extrude(textz)
+                    text(
+                        text1,
+                        fsize1,
+                        font = str(font1, ":", fstyle1),
+                        halign = "left",
+                        valign = "center"
+                    );
+        }
+        
+        // Output
+        #text1_output();
+}
+
+
+// Label Master Module
+module culltivate_label(){}
+
 union(){
     color("silver")
         culltivate_body();
+        culltivate_text();
     translate([0,0,label_thickness])
         color("#000000")
-            #culltivate_border();
+            *culltivate_border();
 }
