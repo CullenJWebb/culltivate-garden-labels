@@ -68,10 +68,10 @@ module culltivate_body(
                 cube([x,y,z], center = false);
                 translate([-y/2,y,z/2])
                     rotate([0,0,45])
-                        #cube([y,y,z], center = true);
+                        cube([y,y,z], center = true);
                 translate([-y/2,0,z/2])
                     rotate([0,0,45])
-                        #cube([y,y,z], center = true);
+                        cube([y,y,z], center = true);
                 
                 
             }
@@ -83,34 +83,26 @@ module culltivate_body(
         if (style == "tombstone")style_tombstone();
         if (style == "chamfered")style_chamfered();
 }
-color("Silver"){
-    culltivate_body(style="square");
-    translate([0,-(label_width+1),0])
-        culltivate_body(style="rounded");
-    translate([0,-(label_width*2+2),0])
-        culltivate_body(style="tombstone");
-    translate([0,-(label_width*3+3),0])
-        culltivate_body(style="chamfered");
-}
 
 // Label Border
-module culltivate_body(
+module culltivate_border(
             style = "tombstone",
             x = label_length,
             y = label_width,
-            z = label_thickness,
+            z = text_height,
             border_x = border_size,
         ){
         
+        // Calculate tool sizes
+        x2 = x - border_x;
+        y2 = y - border_x;
+        xy_loc = border_x / 2;
         
-}
-
-color("Silver"){
-    culltivate_body(style="square");
-    translate([0,-(label_width+1),0])
-        culltivate_body(style="rounded");
-    translate([0,-(label_width*2+2),0])
-        culltivate_body(style="tombstone");
-    translate([0,-(label_width*3+3),0])
-        culltivate_body(style="chamfered");
+        
+        // Cut from body using smaller body as tool to leave border 
+        difference(){
+            culltivate_body(style=style,x=x,y=y,z=z);
+            translate([xy_loc,xy_loc,0])
+                culltivate_body(style=style,x=x2,y=y2,z=z);
+        }
 }
