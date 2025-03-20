@@ -11,7 +11,8 @@ border_size = 1; // .1
 emboss = true;
 // Toggle text/border on bottom of label (flush only)
 mirror_label = true;
-/* [Fonts] */
+/* [Text Settings] */
+text_color = "#000000";
 // Primary font family
 font_primary = "Open Sans"; // [Open Sans, Open Sans Condensed, Ubuntu, Montserrat]
 // Primary font style
@@ -36,6 +37,16 @@ label_thickness = 1.2;
 text1 = "Tomato";
 // Optional secondary text for label
 text2 = "Roma";
+/* [Ground Spike] */
+// Toggle ground spike on or off
+spike = true;
+// Adjust width of ground spike at widest point
+spike_width = 10;
+// Adjust length of spike
+spike_length = 50;
+// Toggle stiffening ribs on or off
+spike_ribbing = true;
+
 /* [Advanced] */
 // Height of text and other embossed elements
 text_height = 0.2;
@@ -150,6 +161,10 @@ module culltivate_text(
         posy1 = y/2;
         posz1 = z;
         textpos1 = [posx1,posy1,posz1];
+        posx2 = x - 1 - border_x;
+        posy2 = y/2;
+        posz2 = z;
+        textpos2 = [posx2,posy2,posz2];
         
         module text1_output(){
             translate(textpos1)
@@ -163,13 +178,44 @@ module culltivate_text(
                     );
         }
         
+        module text2_output(){
+            translate(textpos2)
+                linear_extrude(textz)
+                    text(
+                        text2,
+                        fsize2,
+                        font = str(font2, ":", fstyle2),
+                        halign = "right",
+                        valign = "center"
+                    );
+        }
+        
         // Output
-        #text1_output();
+        text1_output();
+        text2_output();
 }
 
 
 // Label Master Module
-module culltivate_label(){}
+module culltivate_label(
+            style = label_style,
+            x = label_length,
+            y = label_width,
+            z = label_thickness,
+            textz = text_height,
+            border_x = border_size,
+            text1 = text1,
+            font1 = font_primary,
+            fstyle1 = font_style_primary,
+            fsize1 = font_size_primary,
+            text2 = text2,
+            font2 = font_secondary,
+            fstyle2 = font_style_secondary,
+            fsize2 = font_size_secondary,
+            ){
+            
+            
+        }
 
 union(){
     color("silver")
