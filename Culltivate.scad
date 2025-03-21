@@ -7,27 +7,40 @@ label_style="tombstone";// ["square":Square, "rounded":Rounded, "tombstone":Tomb
 enable_border = true;
 // Thickness of decorative outline in mm
 border_size = 2; // .1
+// Toggle border inset. If inset border size will halve.
+border_inset = true;
 // Emboss text as separate layer or disable to print flush (flush requires 3MF file output)
 emboss = false;
 // Toggle text/border on bottom of label (flush only, 3MF required)
 mirror_label = true;
 /* [Colors] */
-base_color = "#6F5034";
-text_color = "#000000";
-border_color = "#000000";
-/* [Text Settings] */
+base_color = "#6F5034"; // color
+text_color = "#000000"; // color
+emoji_color = "#ff0000"; // color
+border_color = "#000000"; // color
+/* [Font and Emoji Settings] */
 // Primary font family
-font_primary = "Open Sans"; // [Open Sans, Open Sans Condensed, Ubuntu, Montserrat]
+text1_font = "Sriracha"; // [Open Sans, Mali, Pacifico, Roboto Slab, Sriracha]
 // Primary font style
-font_style_primary = "Regular"; // [Regular,Black,Bold,ExtraBol,ExtraLight,Light,Medium,SemiBold,Thin,Italic,Black Italic,Bold Italic,ExtraBold Italic,ExtraLight Italic,Light Italic,Medium Italic,SemiBold Italic,Thin Italic]
+text1_style = "Regular"; // [Regular,Black,Bold,ExtraBol,ExtraLight,Light,Medium,SemiBold,Thin,Italic,Black Italic,Bold Italic,ExtraBold Italic,ExtraLight Italic,Light Italic,Medium Italic,SemiBold Italic,Thin Italic]
 // Primary text font size
-font_size_primary = 5;  // .1
+text1_size = 5;  // .1
+// Change x position of text on label
+text1_posx = 2; // [0:Left,1:Center,2:Right]
 // Secondary font family
-font_secondary = "Open Sans"; // [Open Sans, Open Sans Condensed, Ubuntu, Montserrat]
+text2_font = "Sriracha"; // [Open Sans, Mali, Pacifico, Roboto Slab, Sriracha]
 // Secondary font style
-font_style_secondary = "Regular"; // [Regular,Black,Bold,ExtraBol,ExtraLight,Light,Medium,SemiBold,Thin,Italic,Black Italic,Bold Italic,ExtraBold Italic,ExtraLight Italic,Light Italic,Medium Italic,SemiBold Italic,Thin Italic]
+text2_style = "Regular"; // [Regular,Black,Bold,ExtraBol,ExtraLight,Light,Medium,SemiBold,Thin,Italic,Black Italic,Bold Italic,ExtraBold Italic,ExtraLight Italic,Light Italic,Medium Italic,SemiBold Italic,Thin Italic]
 // Secondary text font size
-font_size_secondary = 5;  // .1
+text2_size = 5;  // .1
+// Change x position of text on label
+text2_posx = 2; // [0:Left,1:Center,2:Right]
+// Emoji size
+emoji_size = 8; // .1
+// Change x position of emoji on label
+emoji_posx =  0; // [0:Left,1:Center,2:Right]
+// Toggle emoji filled vs. outlined.
+emoji_solid = true;
 /* [Size] */
 // Length in mm
 label_length = 75;
@@ -48,11 +61,11 @@ spike_length = 50;
 spike_thickness = 1; //.1
 /* [Custom Label] */
 // Primary text for label
-text1 = "Tomato";
+text1 = "TOMATO";
 // Optional secondary text for label
-text2 = "Roma";
+text2 = "";
 // Optional Emoji in center of label
-food_item = "🍇"; // ["🍇": "Grapes","🍈": "Melon",];
+emoji = "🍅"; // [🍎:Apple 🍎, 🍏:Green Apple 🍏, 🍐:Pear 🍐, 🍊:Tangerine 🍊, 🍋:Lemon 🍋, 🍌:Banana 🍌, 🍉:Watermelon 🍉, 🍇:Grapes 🍇, 🍓:Strawberry 🍓, 🍈:Melon 🍈, 🍒:Cherries 🍒, 🍑:Peach 🍑, 🥭:Mango 🥭, 🍍:Pineapple 🍍, 🥥:Coconut 🥥, 🥝:Kiwi 🥝, 🍅:Tomato 🍅, 🍆:Eggplant 🍆, 🥑:Avocado 🥑, 🥔:Potato 🥔, 🥕:Carrot 🥕, 🌽:Corn 🌽, 🌶️:Hot Pepper 🌶️, 🥒:Cucumber 🥒, 🥬:Leafy Green 🥬, 🥦:Broccoli 🥦, 🧄:Garlic 🧄, 🧅:Onion 🧅, 🥜:Peanuts 🥜, 🌰:Chestnut 🌰, 🍞:Bread 🍞, 🥐:Croissant 🥐, 🥖:Baguette 🥖, 🥨:Pretzel 🥨, 🥯:Bagel 🥯, 🧇:Waffle 🧇, 🥞:Pancakes 🥞, 🧀:Cheese 🧀, 🍖:Meat on Bone 🍖, 🍗:Poultry Leg 🍗, 🥩:Cut of Meat 🥩, 🥓:Bacon 🥓, 🍔:Hamburger 🍔, 🍟:Fries 🍟, 🍕:Pizza 🍕, 🌭:Hot Dog 🌭, 🥪:Sandwich 🥪, 🌮:Taco 🌮, 🌯:Burrito 🌯, 🥙:Stuffed Flatbread 🥙, 🧆:Falafel 🧆, 🥚:Egg 🥚, 🍳:Cooking 🍳, 🥘:Shallow Pan 🥘, 🍲:Pot of Food 🍲, 🥣:Bowl 🥣, 🥗:Salad 🥗, 🍿:Popcorn 🍿, 🧈:Butter 🧈, 🧂:Salt 🧂, 🥫:Canned Food 🥫, 🍱:Bento Box 🍱, 🍘:Rice Cracker 🍘, 🍙:Rice Ball 🍙, 🍚:Cooked Rice 🍚, 🍛:Curry Rice 🍛, 🍜:Steaming Bowl 🍜, 🍝:Spaghetti 🍝, 🍠:Sweet Potato 🍠, 🍢:Oden 🍢, 🍣:Sushi 🍣, 🍤:Fried Shrimp 🍤, 🍥:Fish Cake 🍥, 🥮:Moon Cake 🥮, 🍡:Dango 🍡, 🥟:Dumpling 🥟, 🥠:Fortune Cookie 🥠, 🥡:Takeout Box 🥡, 🍦:Soft Ice Cream 🍦, 🍧:Shaved Ice 🍧, 🍨:Ice Cream 🍨, 🍩:Doughnut 🍩, 🍪:Cookie 🍪, 🎂:Birthday Cake 🎂, 🍰:Shortcake 🍰, 🧁:Cupcake 🧁, 🥧:Pie 🥧, 🍫:Chocolate Bar 🍫, 🍬:Candy 🍬, 🍭:Lollipop 🍭, 🍮:Custard 🍮, 🍯:Honey 🍯, 🍼:Baby Bottle 🍼, 🥛:Milk 🥛, ☕:Hot Drink ☕, 🍵:Teacup 🍵, 🍶:Sake 🍶, 🍾:Champagne 🍾, 🍷:Wine 🍷, 🍸:Cocktail 🍸, 🍹:Tropical Drink 🍹, 🍺:Beer 🍺, 🍻:Clinking Beers 🍻, 🥂:Clinking Glasses 🥂, 🥃:Tumbler 🥃, 🥤:Straw Cup 🥤, 🧃:Juice Box 🧃, 🧉:Mate 🧉, 🧊:Ice Cube 🧊]
 /* [Advanced] */
 // Height of text and other embossed elements, multiples of 0.2mm recommended
 text_height = 0.2;
@@ -128,6 +141,8 @@ module culltivate_border(
             y = label_width,
             z = text_height,
             border_x = border_size,
+            enable_border = enable_border,
+            border_inset = border_inset,
             emboss = emboss,
         ){
         
@@ -135,6 +150,8 @@ module culltivate_border(
         x2 = x - border_x;
         y2 = y - border_x;
         xy_loc = border_x / 2;
+        
+        // Calculate Emboss / Flush
         z2 = (emboss) ? z : 0.2;
         posz = (emboss) ? 0 : 0.0001 - z2; // reduce posz if emboss
         
@@ -149,7 +166,7 @@ module culltivate_border(
         }
         
         // Output
-        translate([0,0,posz])border_body();
+        if(enable_border)translate([0,0,posz])border_body();
 }
 
 // Label Text
@@ -160,24 +177,39 @@ module culltivate_text(
             z = label_thickness,
             textz = text_height,
             border_x = border_size,
+            enable_border = enable_border,
             emboss = emboss,
             text1 = text1,
-            font1 = font_primary,
-            fstyle1 = font_style_primary,
-            fsize1 = font_size_primary,
+            font1 = text1_font,
+            fstyle1 = text1_style,
+            fsize1 = text1_size,
+            text1_posx = text1_posx,
             text2 = text2,
-            font2 = font_secondary,
-            fstyle2 = font_style_secondary,
-            fsize2 = font_size_secondary,
+            font2 = text2_font,
+            fstyle2 = text2_style,
+            fsize2 = text2_size,
+            text2_posx = text2_posx,
         ){
         
-        // Calculate variables
+        // Calculate Emboss / Flush
         z2 = (emboss) ? textz : 0.2; // change extrude if not emboss
         posz = (emboss) ? z : z - z2; // reduce posz if not emboss
-        posx1 = 1 + border_x;
+        
+        // Calculate Alignment
+        inset = (enable_border) ? border_x + 1 : 1; // inset amount from edge depending on border
+        posx_align = [
+            [inset,"left"], // left
+            [x/2,"center"], // center
+            [x - inset,"right"], //right
+        ];
+        
+        // Text 1 Alignment
+        posx1 = posx_align[text1_posx][0];
         posy1 = y/2;
         textpos1 = [posx1,posy1,posz + 0.0001];
-        posx2 = x - 1 - border_x;
+        
+        // Text2 Alignment
+        posx2 = posx_align[text2_posx][0];
         posy2 = y/2;
         textpos2 = [posx2,posy2,posz + 0.0001];
         
@@ -188,7 +220,7 @@ module culltivate_text(
                         text1,
                         fsize1,
                         font = str(font1, ":", fstyle1),
-                        halign = "left",
+                        halign = posx_align[text1_posx][1],
                         valign = "center"
                     );
         }
@@ -200,7 +232,7 @@ module culltivate_text(
                         text2,
                         fsize2,
                         font = str(font2, ":", fstyle2),
-                        halign = "right",
+                        halign = posx_align[text2_posx][1],
                         valign = "center"
                     );
         }
@@ -208,6 +240,74 @@ module culltivate_text(
         // Output
         text1_output();
         text2_output();
+}
+
+// Label Emoji
+module culltivate_emoji(
+            style = label_style,
+            x = label_length,
+            y = label_width,
+            z = label_thickness,
+            textz = text_height,
+            border_x = border_size,
+            enable_border = enable_border,
+            emboss = emboss,
+            emoji = emoji,
+            emoji_size = emoji_size,
+            emoji_solid = emoji_solid,
+            emoji_posx = emoji_posx,
+            emoji_color = emoji_color,
+        ){
+        
+        // Calculate Emboss / Flush
+        z2 = (emboss) ? textz : 0.2; // change extrude if not emboss
+        posz = (emboss) ? z : z - z2; // reduce posz if not emboss
+        
+        // Calculate Alignment
+        inset = (enable_border) ? border_x + 1 : 1; // inset amount from edge depending on border
+        posx_align = [
+            [inset,"left"], // left
+            [x/2,"center"], // center
+            [x - inset,"right"], //right
+        ];
+        posx = posx_align[emoji_posx][0];
+        posy = y/2;
+        emoji_pos = [posx,posy,posz + 0.0001];
+        
+        // Default emoji font output, ie outlined
+        module emoji_outline(){
+            translate(emoji_pos)
+                linear_extrude(z2)
+                    text(
+                        emoji,
+                        emoji_size,
+                        font = str("Noto Emoji", ":", "Bold"),
+                        halign = posx_align[emoji_posx][1],
+                        valign = "center"
+                    );
+        }
+        
+        // Solid emoji output
+        module emoji_fill(){
+            translate(emoji_pos)
+                linear_extrude(z2)
+                    fill()
+                        text(
+                            emoji,
+                            emoji_size,
+                            font = str("Noto Emoji", ":", "Bold"),
+                            halign = posx_align[emoji_posx][1],
+                            valign = "center"
+                        );
+        }
+        
+        // Output
+        if(emoji_solid){
+            emoji_fill();
+        } else{
+            emoji_outline();
+        }
+        
 }
 
 // Ground Spike
@@ -273,16 +373,22 @@ module culltivate_label(
             z = label_thickness,
             textz = text_height,
             border_x = border_size,
+            enable_border = enable_border,
+            border_inset = border_inset,
             emboss=emboss,
             mirror_label = mirror_label,
             text1 = text1,
-            font1 = font_primary,
-            fstyle1 = font_style_primary,
-            fsize1 = font_size_primary,
+            font1 = text1_font,
+            fstyle1 = text1_style,
+            fsize1 = text1_size,
+            text1_posx = text1_posx,
             text2 = text2,
-            font2 = font_secondary,
-            fstyle2 = font_style_secondary,
-            fsize2 = font_size_secondary,
+            font2 = text2_font,
+            fstyle2 = text2_style,
+            fsize2 = text2_size,
+            text2_posx = text2_posx,
+            emoji = emoji,
+            emoji_posx = emoji_posx,
             spike = spike,
             spikex = spike_length,
             spikey = spike_width,
@@ -290,32 +396,62 @@ module culltivate_label(
             ribbing = spike_ribbing,
             base_color = base_color,
             text_color = text_color,
+            emoji_color = emoji_color,
             border_color = border_color,
         ){
         
         // Border and text
         module label_face(
                     z=textz,
+                    enable_border = enable_border,
                     border_x = border_x,
                     emboss=emboss,
                 ){
                     color(text_color)
                         culltivate_text(
+                            style = label_style,
+                            x = label_length,
+                            y = label_width,
+                            z = label_thickness,
                             textz = z,
+                            enable_border = enable_border,
                             border_x = border_x,
                             emboss=emboss,
                             text1 = text1,
-                            font1 = font_primary,
-                            fstyle1 = font_style_primary,
-                            fsize1 = font_size_primary,
+                            font1 = text1_font,
+                            fstyle1 = text1_style,
+                            fsize1 = text1_size,
+                            text1_posx = text1_posx,
                             text2 = text2,
-                            font2 = font_secondary,
-                            fstyle2 = font_style_secondary,
-                            fsize2 = font_size_secondary,
+                            font2 = text2_font,
+                            fstyle2 = text2_style,
+                            fsize2 = text2_size,
+                            text2_posx = text2_posx,
+                        );
+                    color(emoji_color)
+                        culltivate_emoji(
+                            style = label_style,
+                            x = label_length,
+                            y = label_width,
+                            z = label_thickness,
+                            textz = text_height,
+                            border_x = border_size,
+                            enable_border = enable_border,
+                            emboss = emboss,
+                            emoji = emoji,
+                            emoji_size = emoji_size,
+                            emoji_solid = emoji_solid,
+                            emoji_posx = emoji_posx,
+                            emoji_color = emoji_color,
                         );
                     translate([0,0,label_thickness])
                         color(border_color)
-                            culltivate_border(z=z,emboss=emboss,border_x = border_x);
+                            culltivate_border(
+                                z=z,
+                                emboss=emboss,
+                                border_x = border_x,
+                                enable_border = enable_border,
+                            );
         }
         
         // Body and spike
@@ -341,7 +477,49 @@ module culltivate_label(
         if(mirror_label)label_mirror();
 }
 
-// Noto Emoji: https://fonts.google.com/noto/specimen/Noto+Emoji/glyphs?categoryFilters=Appearance:%2FNot+text%2FSymbols
+// Assorted Labels
+// [text1,text2,emoji,emoji_color]
+redorange = [
+    ["TOMATO","","🍅","#C12E1F"],
+    ["ROMA TOMATO","","🥭","#C12E1F"],
+    ["CHERRY TOMATO","","🫐","#C12E1F"],
+    ["BELL PEPPER","","🫑","#C12E1F"],
+    ["HOT PEPPER","","🌶︎","#C12E1F"],
+    ["CARROT","","🥕","#FF9016"],
+    ["SQUASH","","🍐","#FF9016"],
+];
+
+yellowgreen = [
+    ["CORN","","🌽","#F4EE2A"],
+];
+
+module culltivate_assorted(veggies){
+    for (i = [0:len(veggies)-1]){
+        translate([0,-i * (label_width+3),0])
+            culltivate_label(
+                text1 = veggies[i][0],
+                text2 = veggies[i][1],
+                emoji = veggies[i][2],
+                emoji_color = veggies[i][3],
+            );
+    }
+}
+// Makerworld settings: https://forum.bambulab.com/t/parametric-model-maker-v0-10-0-multi-plate-3mf-generation/144618
+
+// Makerworld Build Plates
+module mw_plate_1() {
+    culltivate_assorted(redorange);
+}
+
+module mw_plate_2() {
+    culltivate_assorted(yellowgreen);
+}
+// Makerworld Assembly View
+module mw_assembly_view() {
+    mw_plate_1();
+    translate([(label_length + spike_length + 5) * 1,0,0])mw_plate_2();
+}
 
 // Final output
-culltivate_label();
+// render()culltivate_label();
+render()mw_assembly_view();
