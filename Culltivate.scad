@@ -39,7 +39,7 @@ text2_posx = 2; // [0:Left,1:Center,2:Right]
 emoji_size = 8; // .1
 // Change x position of emoji on label
 emoji_posx =  0; // [0:Left,1:Center,2:Right]
-// Toggle emoji filled vs. outlined.
+// STRONGLY RECOMMENDED! Toggle emoji filled vs. outlined.
 emoji_solid = true;
 /* [Size] */
 // Length in mm
@@ -70,9 +70,8 @@ emoji = "🍅"; // [🍎:Apple 🍎, 🍏:Green Apple 🍏, 🍐:Pear 🍐, 🍊
 // Height of text and other embossed elements, multiples of 0.2mm recommended
 text_height = 0.2;
 // Increase or decrease resolution of certain details
-$fs = 0.01;  // .01
-// Increase or decrease resolution of certain details
-$fa = 1;
+$fa = 12; // .01
+$fs = 2;  // .01
 
 /* [Hidden] */
 fudge = 0.0001; // Fix render for exact booleans
@@ -146,10 +145,16 @@ module culltivate_border(
             emboss = emboss,
         ){
         
-        // Calculate tool sizes
+        // Calculate tool paramters
         x2 = x - border_x;
         y2 = y - border_x;
-        xy_loc = border_x / 2;
+        xy_loc = (border_inset) ? border_x / 4 : border_x / 2;
+        output_loc = (border_inset) ? border_x / 4 : 0;
+        
+        // Calculate label size to cut away from with tool
+        // Reduced size if border inset
+        x1 = (border_inset) ? x - border_x/2 : x;
+        y1 = (border_inset) ? y - border_x/2 : y;
         
         // Calculate Emboss / Flush
         z2 = (emboss) ? z : 0.2;
@@ -159,14 +164,14 @@ module culltivate_border(
         // Cut from body using smaller body as tool to leave border 
         module border_body(){
             difference(){
-                culltivate_body(style=style,x=x,y=y,z=z2);
+                culltivate_body(style=style,x=x1,y=y1,z=z2);
                 translate([xy_loc,xy_loc,0])
                     culltivate_body(style=style,x=x2,y=y2,z=z2);
             }
         }
         
         // Output
-        if(enable_border)translate([0,0,posz])border_body();
+        if(enable_border)translate([output_loc,output_loc,posz])border_body();
 }
 
 // Label Text
@@ -317,11 +322,15 @@ module culltivate_spike(
             y = spike_width,
             z = spike_thickness,
             ribbing = spike_ribbing,
+            border_x = border_size,
+            enable_border = enable_border,
         ){
         
         // Calculate variables
-        bridgex = 5; // cjw static?
+        bridgex = (enable_border) ? border_x + 5 : 5; // cjw static?
         bridgey = y/2;
+        skel_x = 2; // Thickness of skeletal walls
+        skel_z = z-0.6; // Depth/size of skeleton cut tool
                 
         module spike_bridge(){
             cube([bridgex,bridgey,z]);
@@ -339,16 +348,16 @@ module culltivate_spike(
         }
         
         module spike_ribbing(){
-            union(){
-                difference(){
+            difference(){
                     spike_shaft();
                     translate([1,0,0.6])
-                        resize([x-2,y-2,z-0.6])
-                            spike_shaft();
-                }
-                translate([x/2,0,z/2])
-                    resize([x-4,2,z])
-                        sphere(10);
+                        resize([x-skel_x,y-skel_x,z-0.6])
+                            difference(){
+                                spike_shaft();
+                                translate([x*0.1,-skel_x/2,0])
+                                    cube([x,skel_x,z]);
+                            }
+                            
             }
         }
         
@@ -458,9 +467,22 @@ module culltivate_label(
         module label_body(){
             color(base_color)
                 union(){
-                    culltivate_body();
-                    translate([x-1,y/2,-0.001])
-                        culltivate_spike();
+                    culltivate_body(
+                        style = label_style,
+                        x = label_length,
+                        y = label_width,
+                        z = label_thickness,
+                    );
+                    translate([x - (1+border_x),y/2,-0.001])
+                        culltivate_spike(
+                            spike = spike,
+                            x = spike_length,
+                            y = spike_width,
+                            z = spike_thickness,
+                            ribbing = spike_ribbing,
+                            border_x = border_size,
+                            enable_border = enable_border,
+                        );
                 }
         }
         
@@ -479,47 +501,118 @@ module culltivate_label(
 
 // Assorted Labels
 // [text1,text2,emoji,emoji_color]
-redorange = [
+vegred = [
     ["TOMATO","","🍅","#C12E1F"],
     ["ROMA TOMATO","","🥭","#C12E1F"],
     ["CHERRY TOMATO","","🫐","#C12E1F"],
     ["BELL PEPPER","","🫑","#C12E1F"],
     ["HOT PEPPER","","🌶︎","#C12E1F"],
-    ["CARROT","","🥕","#FF9016"],
-    ["SQUASH","","🍐","#FF9016"],
+    ["POTATO","","🥔︎","#C12E1F"],
+    ["ONION","","🧅","#C12E1F"],
+    ["RADISH","","🫧︎","#C12E1F"],
 ];
 
-yellowgreen = [
+vegorange = [
+    ["CARROT","","🥕","#FF9016"],
+    ["SQUASH","","🍐","#FF9016"],
+    ["PUMPKIN","","🍊","#FF9016"],
+    ["BELL PEPPER","","🫑","#FF9016"],
+];
+
+vegyellow = [
     ["CORN","","🌽","#F4EE2A"],
+    ["BELL PEPPER","","🫑","#F4EE2A"],
+    ["ONION","","🧅","#F4EE2A"],
+    ["SUNFLOWER","","🔆","#F4EE2A"],
+    ["SUM. SQUASH","","🍆","#F4EE2A"],
+    ["POTATO","","🥔︎","#F4EE2A"],
+];
+
+veggreen = [
+    ["CUCUMBER","","🥒","#00AE42"],
+    ["ZUCHINI","","🍆","#00AE42"],
+    ["LETTUCE","","🥬","#00AE42"],
+    ["BELL PEPPER","","🫑","#00AE42"],
+    ["HOT PEPPER","","🌶︎","#00AE42"],
+    ["JALEPENO","","🌶︎","#00AE42"],
+    ["HABANERO","","🌶︎","#00AE42"],
+    ["MELLON","","🍈︎","#00AE42"],
+    ["WATERMELLON","","🍈︎","#00AE42"],
+    ["GREEN BEAN","","🟰︎","#00AE42"],
+    ["BROCCOLI","","🥦︎","#00AE42"],
+    ["PEAS","","🫧","#00AE42"],
+    ["CELERY","","➖︎","#00AE42"],
+    ["OKRA","","🥕︎","#00AE42"],
+    ["CABBAGE","","⚪︎︎","#00AE42"],
+];
+
+vegpurple = [
+    ["BLUEBERRY","","🫧","#5E43B7"],
+    ["ONION","","🧅","#5E43B7"],
+    ["CABBAGE","","⚪","#5E43B7"],
+    ["BEET","","🌰","#5E43B7"],
+    ["CARROT","","🥕","#5E43B7"],
+];
+
+vegwhite = [
+    ["ONION","","🧅","#FFFFFF"],
+    ["CAULIFLOWER","","🥦","#FFFFFF"],
+    ["GARLIC","","🧄","#FFFFFF"],
+    ["POTATO","","🥔","#FFFFFF"],
 ];
 
 module culltivate_assorted(veggies){
     for (i = [0:len(veggies)-1]){
-        translate([0,-i * (label_width+3),0])
-            culltivate_label(
-                text1 = veggies[i][0],
-                text2 = veggies[i][1],
-                emoji = veggies[i][2],
-                emoji_color = veggies[i][3],
-            );
+        yloc = -(i/2) * (label_width+3);
+        if (i % 2 == 0) {
+            translate([0,yloc,0])
+                culltivate_label(
+                    text1 = veggies[i][0],
+                    text2 = veggies[i][1],
+                    emoji = veggies[i][2],
+                    emoji_color = veggies[i][3],
+                );
+        } else {
+            translate([(label_length + spike_length) * 1.7,yloc + label_width ,0])
+                rotate([0,0,180])
+                    culltivate_label(
+                        text1 = veggies[i][0],
+                        text2 = veggies[i][1],
+                        emoji = veggies[i][2],
+                        emoji_color = veggies[i][3],
+                    );
+        }
     }
 }
 // Makerworld settings: https://forum.bambulab.com/t/parametric-model-maker-v0-10-0-multi-plate-3mf-generation/144618
 
 // Makerworld Build Plates
 module mw_plate_1() {
-    culltivate_assorted(redorange);
+    culltivate_assorted(vegred);
 }
-
 module mw_plate_2() {
-    culltivate_assorted(yellowgreen);
+    culltivate_assorted(vegorange);
+}
+module mw_plate_3() {
+    culltivate_assorted(vegyellow);
+}
+module mw_plate_4() {
+    culltivate_assorted(veggreen);
+}
+module mw_plate_5() {
+    culltivate_assorted(vegpurple);
+}
+module mw_plate_6() {
+    culltivate_assorted(vegwhite);
 }
 // Makerworld Assembly View
 module mw_assembly_view() {
+    xloc = (label_length + spike_length) * 2;
     mw_plate_1();
-    translate([(label_length + spike_length + 5) * 1,0,0])mw_plate_2();
+    translate([xloc * 1,0,0])mw_plate_2();
+    translate([xloc * 2,0,0])mw_plate_3();
+    translate([xloc * 3,0,0])mw_plate_4();
+    translate([xloc * 4,0,0])mw_plate_5();
+    translate([xloc * 5,0,0])mw_plate_6();
 }
-
-// Final output
-// render()culltivate_label();
-render()mw_assembly_view();
+mw_assembly_view();
