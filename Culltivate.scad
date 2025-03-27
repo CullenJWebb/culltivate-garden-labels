@@ -46,7 +46,7 @@ label_length = 75;
 // Width in mm
 label_width = 15;
 // Thickness before text, multiples of 0.2mm recommended
-label_thickness = 1.2; // [0.6:0.2:3]
+label_thickness = 1.2; // [0.6:0.2:5]
 /* [Ground Spike] */
 // Select type of spike.
 spike = 1; // [0:None,1:Solid,2:Skeleton,3:Simple Rounded]
@@ -57,7 +57,7 @@ spike_width = 8; //.1
 // Adjust length of spike
 spike_length = 50;
 // Adjust thickness of spike
-spike_thickness = 1; //.1
+spike_thickness = 1; // [0.6:0.2:5]
 /* [Custom Label] */
 // Primary text for label
 text1 = "CULLTIVATE";
@@ -337,13 +337,14 @@ module culltivate_spike(
         ){
         
         // Calculate variables
-        bridgex = (enable_border) ? border_x + 5 : 5; // cjw static?
+        bridgex = (enable_border) ? border_x + 5 : 5;
         bridgey = y/2;
         skel_x = 2; // Thickness of skeletal walls
-        skel_z = z-0.6; // Depth/size of skeleton cut tool
+        skel_z = z-0.6; // Depth of skeletal cut
                 
         module spike_bridge(){
-            cube([bridgex,bridgey,z]);
+            translate([0,-bridgey/2,0])
+                cube([bridgex,bridgey,z]);
         }
         
         module spike_shaft(){
@@ -371,11 +372,18 @@ module culltivate_spike(
             }
         }
         
+        module spike_rounded(){
+            roundedy = y/2;
+            
+            translate([0,-roundedy/2,0])cube([x-roundedy,roundedy,z]);
+            translate([x-roundedy,0,0])cylinder(d=roundedy,h=z,false);
+        }
+        
         // Output
         if(spike){
-            union(){
-                translate([0,-bridgey/2,0])
-                    spike_bridge();
+            spike_rounded();
+            *union(){
+                spike_bridge();
                 translate([bridgex,0,0])
                     if (ribbing){
                         spike_ribbing();
