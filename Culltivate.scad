@@ -50,8 +50,6 @@ label_thickness = 1.2; // [0.6:0.2:5]
 /* [Ground Spike] */
 // Select type of spike.
 spike = 1; // [0:None,1:Solid,2:Skeleton,3:Simple Rounded]
-// Toggle stiffening ribs on or off
-spike_ribbing = true;
 // Adjust width of ground spike at widest point (halved for rounded)
 spike_width = 8; //.1
 // Adjust length of spike
@@ -331,7 +329,6 @@ module culltivate_spike(
             y = spike_width,
             z = spike_thickness,
             spike = spike,
-            ribbing = spike_ribbing,
             border_x = border_size,
             enable_border = enable_border,
         ){
@@ -358,7 +355,7 @@ module culltivate_spike(
                 polygon(points=[poly_tl,poly_tr,poly_tip,poly_br,poly_bl]);
         }
         
-        module spike_ribbing(){
+        module spike_skeleton(){
             difference(){
                     spike_shaft();
                     translate([1,0,0.6])
@@ -380,15 +377,16 @@ module culltivate_spike(
         }
         
         // Output
-        if(spike){
+        if(spike == 3){
             spike_rounded();
-            *union(){
+        } else if (spike != 0){
+            union(){
                 spike_bridge();
                 translate([bridgex,0,0])
-                    if (ribbing){
-                        spike_ribbing();
-                    } else {
+                    if (spike == 1){
                         spike_shaft();
+                    } else if (spike == 2){
+                        spike_skeleton();
                     }
             }
         }
@@ -425,7 +423,6 @@ module culltivate_label(
             spikex = spike_length,
             spikey = spike_width,
             spikez = spike_thickness,
-            ribbing = spike_ribbing,
             base_color = base_color,
             text_color = text_color,
             emoji_color = emoji_color,
@@ -500,7 +497,6 @@ module culltivate_label(
                             y = spike_width,
                             z = spike_thickness,
                             spike = spike,
-                            ribbing = spike_ribbing,
                             border_x = border_size,
                             enable_border = enable_border,
                         );
