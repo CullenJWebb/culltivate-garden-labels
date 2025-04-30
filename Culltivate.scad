@@ -1,6 +1,6 @@
 /* [Style and Appearance] */
 //I want to generate...
-select_output=02; // [0:Custom Label, 01:Assorted Labels, 02:Both]
+select_output=0; // [0:Custom Label, 01:Assorted Labels, 02:Both]
 // Shape and style of labels
 label_style="chamfered";// ["square":Square, "rounded":Rounded, "tombstone":Tombstone, "chamfered":Chamfered]
 // Toggle decorative outline
@@ -11,7 +11,7 @@ border_size = 3; // .1
 border_inset = true;
 // Emboss text as separate layer or disable to print flush (3MF required)
 emboss = false;
-// Toggle text/border on bottom of label (flush only, 3MF required)
+// Toggle text and border on bottom of label (flush only, 3MF required)
 mirror_label = false;
 /* [Colors] */
 base_color = "#6F5034"; // color
@@ -49,7 +49,7 @@ label_width = 15;
 label_thickness = 1.2; // [0.6:0.2:5]
 /* [Ground Spike] */
 // Select type of spike.
-spike = 1; // [0:None,1:Solid,2:Skeleton,3:Simple Rounded]
+spike = 2; // [0:None,1:Solid,2:Skeleton,3:Simple Rounded]
 // Adjust width of ground spike at widest point (halved for rounded)
 spike_width = 8; //.1
 // Adjust length of spike
@@ -635,29 +635,33 @@ module culltivate_assorted(veggies){
         }
     }
 }
-// Makerworld settings: https://forum.bambulab.com/t/parametric-model-maker-v0-10-0-multi-plate-3mf-generation/144618
+// Makerworld settings: https://forum.bambulab.com/t/parametric-model-maker-v0-10-0-multi-plate-3mf-generation/144618w
+
+plate_pos = [-100,50,0];
 
 // Makerworld Build Plates
 module mw_plate_1() {
-    // Custom Label
-    if(select_output==0 || select_output==2)translate([0,label_width+3,0])culltivate_label();
-    // Assorted Labels
-    if(select_output>0)culltivate_assorted(vegred);
+    translate(plate_pos){
+        // Custom Label
+        if(select_output==0 || select_output==2)translate([0,label_width+3,0])culltivate_label();
+        // Assorted Labels
+        if(select_output>0)culltivate_assorted(vegred);
+    }
 }
 module mw_plate_2() {
-    if(select_output>0)culltivate_assorted(vegorange);
+    if(select_output>0)translate(plate_pos)culltivate_assorted(vegorange);
 }
 module mw_plate_3() {
-    if(select_output>0)culltivate_assorted(vegyellow);
+    if(select_output>0)translate(plate_pos)culltivate_assorted(vegyellow);
 }
 module mw_plate_4() {
-    if(select_output>0)culltivate_assorted(veggreen);
+    if(select_output>0)translate(plate_pos)culltivate_assorted(veggreen);
 }
 module mw_plate_5() {
-    if(select_output>0)culltivate_assorted(vegpurple);
+    if(select_output>0)translate(plate_pos)culltivate_assorted(vegpurple);
 }
 module mw_plate_6() {
-    if(select_output>0)culltivate_assorted(vegwhite);
+    if(select_output>0)translate(plate_pos)culltivate_assorted(vegwhite);
 }
 // Makerworld Assembly View
 module mw_assembly_view() {
