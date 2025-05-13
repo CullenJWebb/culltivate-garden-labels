@@ -344,7 +344,7 @@ module culltivate_spike(
                 
         module spike_bridge(){
             translate(bridge_pos)
-                #cube([bridgex,bridgey,z], center = true);
+                cube([bridgex,bridgey,z], center = true);
         }
         
         module spike_shaft(){
