@@ -2,7 +2,7 @@
 //I want to generate...
 select_output=0; // [0:Custom Label, 01:Assorted Labels, 02:Both]
 // Shape and style of labels
-label_style="chamfered";// ["square":Square, "rounded":Rounded, "tombstone":Tombstone, "chamfered":Chamfered]
+label_style="chamfered tombstone";// ["square":Square, "rounded":Rounded, "tombstone":Tombstone, "chamfered":Chamfered, "chamfered tombstone":Chamfered Tombstone]
 // Toggle decorative outline
 enable_border = true;
 // Thickness of decorative outline in mm
@@ -77,6 +77,7 @@ $fs = 1;  // .01
 
 /* [Hidden] */
 fudge = 0.0001; // Fix render for exact booleans
+culltivate_version = 1.2;
 
 // Label body
 module culltivate_body(
@@ -117,6 +118,18 @@ module culltivate_body(
         module style_chamfered(){
             difference(){
                 cube([x,y,z], center = false);
+                translate([-y/2,y,z/2])rotate([0,0,45])cube([y,y,z], center = true); //TL
+                translate([-y/2,0,z/2])rotate([0,0,45])cube([y,y,z], center = true); //BL
+                translate([x+(y/2),y,z/2])rotate([0,0,45])cube([y,y,z], center = true);//TR
+                translate([x+(y/2),0,z/2])rotate([0,0,45])cube([y,y,z], center = true);//BR
+                
+            }
+        }
+        
+        // Style: chamfered
+        module style_chamfered_tombstone(){
+            difference(){
+                cube([x,y,z], center = false);
                 translate([-y/2,y,z/2])
                     rotate([0,0,45])
                         cube([y,y,z], center = true);
@@ -133,6 +146,7 @@ module culltivate_body(
         if (style == "rounded")style_rounded();
         if (style == "tombstone")style_tombstone();
         if (style == "chamfered")style_chamfered();
+        if (style == "chamfered tombstone")style_chamfered_tombstone();
 }
 
 // Label Border
@@ -334,14 +348,17 @@ module culltivate_spike(
         ){
         
         // Calculate variables
-        bridgex = (enable_border) ? border_x + 5 : 5;
+        bridgex = (enable_border) ? border_x + 7 : 8.1;
         bridgey = y/2;
+        // bridge_posx = (enable_border) ? bridgex - (border_x / 2) : bridgex;
+        bridge_posx = (enable_border) ? bridgex/2 - (border_x / 2) : bridgex/2 - 0.05;
+        bridge_pos = [bridge_posx,0,z/2];
         skel_x = 2; // Thickness of skeletal walls
         skel_z = z-0.6; // Depth of skeletal cut
                 
         module spike_bridge(){
-            translate([0,-bridgey/2,0])
-                cube([bridgex,bridgey,z]);
+            translate(bridge_pos)
+                cube([bridgex,bridgey,z], center = true);
         }
         
         module spike_shaft(){
@@ -382,7 +399,7 @@ module culltivate_spike(
         } else if (spike != 0){
             union(){
                 spike_bridge();
-                translate([bridgex,0,0])
+                translate([8,0,0])
                     if (spike == 1){
                         spike_shaft();
                     } else if (spike == 2){
@@ -491,7 +508,7 @@ module culltivate_label(
                         y = y,
                         z = z,
                     );
-                    translate([x - (1+border_x),y/2,-0.001])
+                    translate([x,y/2,-0.001])
                         culltivate_spike(
                             x = spike_length,
                             y = spike_width,
