@@ -334,14 +334,17 @@ module culltivate_spike(
         ){
         
         // Calculate variables
-        bridgex = (enable_border) ? border_x + 5 : 5;
+        bridgex = (enable_border) ? border_x + 7 : 8.1;
         bridgey = y/2;
+        // bridge_posx = (enable_border) ? bridgex - (border_x / 2) : bridgex;
+        bridge_posx = (enable_border) ? bridgex/2 - (border_x / 2) : bridgex/2 - 0.05;
+        bridge_pos = [bridge_posx,0,z/2];
         skel_x = 2; // Thickness of skeletal walls
         skel_z = z-0.6; // Depth of skeletal cut
                 
         module spike_bridge(){
-            translate([0,-bridgey/2,0])
-                cube([bridgex,bridgey,z]);
+            translate(bridge_pos)
+                #cube([bridgex,bridgey,z], center = true);
         }
         
         module spike_shaft(){
@@ -382,7 +385,7 @@ module culltivate_spike(
         } else if (spike != 0){
             union(){
                 spike_bridge();
-                translate([bridgex,0,0])
+                translate([8,0,0])
                     if (spike == 1){
                         spike_shaft();
                     } else if (spike == 2){
@@ -491,7 +494,7 @@ module culltivate_label(
                         y = y,
                         z = z,
                     );
-                    translate([x - (1+border_x),y/2,-0.001])
+                    translate([x,y/2,-0.001])
                         culltivate_spike(
                             x = spike_length,
                             y = spike_width,
